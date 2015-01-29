@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa2559ec_7026486a",
+        "filename": "manifests/nagios-checks.pp",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2015-01-29T06:32:21Z",
+      "side": 1,
+      "message": "Maybe needs to be a variable too? Also other services don\u0027t have any \"use\" parameter",
+      "range": {
+        "startLine": 99,
+        "startChar": 28,
+        "endLine": 99,
+        "endChar": 49
+      },
+      "revId": "63f67b5597f54623067a7f7d9b9bbe6d6dfa3042",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    }
+  ]
+}
