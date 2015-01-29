@@ -1,0 +1,4 @@
+# netapp class
+
+class netapp {
+}
