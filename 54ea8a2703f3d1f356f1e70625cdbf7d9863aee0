@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa2559ec_b071e079",
+        "filename": "manifests/nagios-checks.pp",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2015-01-29T06:13:37Z",
+      "side": 1,
+      "message": "Can we pass this in as a class parameter as well?",
+      "revId": "54ea8a2703f3d1f356f1e70625cdbf7d9863aee0",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    }
+  ]
+}
