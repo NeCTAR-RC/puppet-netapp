@@ -1,21 +1,25 @@
 #!/usr/bin/perl
 
-# Script name:			check_netapp_ontapi.pl
-# Version:				0.8.6.6
-# Original author:		Murphy John
-# Current developer: 	D'Haese Willem
-# Purpose: 				Checks NetApp ontapi clusters for various problems, like volume, aggregate, snapshot, 
-#						quota, snapmirror, filer hardware, port, interface, cluster and disk health, but also NetApp alarms
-# On Github:			https://github.com/willemdh/check_netapp_ontapi
-# To do:
-#	- Completing quota monitoring
-#   - Test and integrate quota inclusion and exclusion
-#   - Integrate performance data
-# History:
+# Script name:		check_netapp_ontap.pl
+# Version:			v2.5.10
+# Original author:	Murphy John
+# Current author: 	D'Haese Willem
+# Purpose: 			Checks NetApp ontapi clusters for various problems, like volume, aggregate, snapshot, 
+#					quota, snapmirror, filer hardware, port, interface, cluster and disk health, but also NetApp alarms
+# On Github:		https://github.com/willemdh/check_netapp_ontap
+# On OutsideIT:		http://outsideit.net/check-netapp-ontap
+# Recent History:
 #   05/06/2014 => Set max records to 200 and removed space_to_bytes sub from $intUsedToBytes (no magnitude)
 #   06/06/2014 => Updated script header and documentation, further testing with thresholds 
 #	10/06/2014 => Added if(defined..) to sub get_volume_space, becasue volumes in transferring mode for a syncing mirror, were causing errors
 #	11/06/2014 => Merged John's 0.6 script with my fork after accepting the transferred project
+#	10/05/2015 => Cleanup script documentation and merged pull request from Waipeng
+# Copyright:
+#	This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
+#	by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed 
+#	in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+#	PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public 
+#	License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use warnings;
 use strict;
@@ -1194,11 +1198,13 @@ sub space_threshold_helper {
 		# Test if various thresholds are defined and if they are then test if the monitored object exceeds them.
 		if (defined($hrefThresholds->{'space-percent'}) || defined($hrefThresholds->{'space-count'})) {
 			# Prepare certain variables pre-check to reduce code duplication.
-			my $intUsedPercent = ($hrefVolInfo->{$strVol}->{'space-used'} / $hrefVolInfo->{$strVol}->{'space-total'}) * 100;
-                        $intUsedPercent = floor($intUsedPercent + 0.5);
-                        my $strReadableUsed = space_to_human_readable($hrefVolInfo->{$strVol}->{'space-used'});
-                        my $strReadableTotal = space_to_human_readable($hrefVolInfo->{$strVol}->{'space-total'});
-                        my $strNewMessage = $strVol . " - " . $strReadableUsed . "/" . $strReadableTotal . " (" . $intUsedPercent . "%) SPACE USED";
+		#	if (defined($hrefVolInfo->{$strVol}->{'space-total'})) {
+				my $intUsedPercent = ($hrefVolInfo->{$strVol}->{'space-used'} / $hrefVolInfo->{$strVol}->{'space-total'}) * 100;
+            	$intUsedPercent = floor($intUsedPercent + 0.5);
+            	my $strReadableUsed = space_to_human_readable($hrefVolInfo->{$strVol}->{'space-used'});
+            	my $strReadableTotal = space_to_human_readable($hrefVolInfo->{$strVol}->{'space-total'});
+            	my $strNewMessage = $strVol . " - " . $strReadableUsed . "/" . $strReadableTotal . " (" . $intUsedPercent . "%) SPACE USED";
+			
 			
 			if (defined($hrefThresholds->{'space-percent'}) && defined($hrefThresholds->{'space-count'})) {
 				my $intCountInBytes = space_to_bytes($hrefThresholds->{'space-count'});
@@ -1213,11 +1219,12 @@ sub space_threshold_helper {
 						$strOutput = get_nagios_description($strOutput, $strNewMessage);
 						$bMarkedForRemoval = 1;
 					}
-				} else {
+				} 
+				else {
 					if ($intUsedPercent >= $hrefThresholds->{'space-percent'}) {
 						$intState = get_nagios_state($intState, $intAlertLevel);
-                                                $strOutput = get_nagios_description($strOutput, $strNewMessage);
-                                                $bMarkedForRemoval = 1;
+                        $strOutput = get_nagios_description($strOutput, $strNewMessage);
+                        $bMarkedForRemoval = 1;
 					}
 				}
 			} elsif (defined($hrefThresholds->{'space-percent'})) {
