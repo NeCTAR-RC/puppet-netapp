@@ -7,9 +7,7 @@ class netapp::nagios_checks (
 
   include nagios
 
-  package { [ 'libwww-perl', 'libxml-perl' ]:
-    ensure => installed,
-  }
+  ensure_packages(['libwww-perl', 'libxml-perl'])
 
   file { '/usr/local/lib/site_perl':
     source  => 'puppet:///modules/netapp/nagios/site_perl',
